@@ -50,6 +50,16 @@ namespace ElinsBank
                     Console.WriteLine("Fel pinkod. Du har {0} antal försök kvar\n", loginAttempts);
                 }
             }
+
+            while (isLoggedIn == true)
+            {
+                Menu();
+            }
+        }
+
+        public static void Menu()
+        {
+
         }
     }
 }
