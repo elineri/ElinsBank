@@ -77,10 +77,13 @@ namespace ElinsBank
                 switch (menuSelection)
                 {
                     case 1: // Se konton och saldo
+                        BackToMenu();
                         break;
                     case 2: // Överföring mellan konton
+                        BackToMenu();
                         break;
                     case 3: // Ta ut pengar
+                        BackToMenu();
                         break;
                     case 4: // Logga ut
                         run = false;
@@ -93,7 +96,11 @@ namespace ElinsBank
                 }
             }
         }
-
-        
+        public static void BackToMenu() // Gå tillbaka till huvudmenyn
+        {
+            Console.WriteLine("\nKlicka enter för att komma till huvudmenyn");
+            Console.ReadLine(); // TODO Fixa enter
+            Console.Clear();
+        }
     }
 }
