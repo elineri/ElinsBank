@@ -59,7 +59,41 @@ namespace ElinsBank
 
         public static void Menu()
         {
+            bool run = true;
 
+            while (run)
+            {
+                // Prints menu options
+                Console.WriteLine("Välj vad du vill göra\n");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("1. Se dina konton och saldo");
+                Console.WriteLine("2. Överföring mellan konton");
+                Console.WriteLine("3. Ta ut pengar");
+                Console.WriteLine("4. Logga ut");
+                Console.ForegroundColor = ConsoleColor.Gray;
+
+                int menuSelection = Int32.Parse(Console.ReadLine());
+
+                switch (menuSelection)
+                {
+                    case 1: // Se konton och saldo
+                        break;
+                    case 2: // Överföring mellan konton
+                        break;
+                    case 3: // Ta ut pengar
+                        break;
+                    case 4: // Logga ut
+                        run = false;
+                        break;
+                    default:
+                        Console.WriteLine("Ogiltligt val. Vänligen klicka enter och välj igen.");
+                        Console.ReadLine(); // TODO Fixa enter
+                        Console.Clear();
+                        break;
+                }
+            }
         }
+
+        
     }
 }
