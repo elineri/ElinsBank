@@ -91,11 +91,11 @@ namespace ElinsBank
 
             while (isLoggedIn == true)
             {
-                Menu();
+                Menu(userAccounts, userID);
             }
         }
 
-        public static void Menu()
+        public static void Menu(string[,] userAccounts, int userID)
         {
             bool run = true;
 
@@ -115,7 +115,7 @@ namespace ElinsBank
                 switch (menuSelection)
                 {
                     case 1: // Se konton och saldo
-                        CheckAccounts();
+                        CheckAccounts(userAccounts, userID);
                         BackToMenu();
                         break;
                     case 2: // Överföring mellan konton
@@ -142,9 +142,18 @@ namespace ElinsBank
             Console.Clear();
         }
 
-        public static void CheckAccounts()
+        public static void CheckAccounts(string[,] userAccounts, int userID)
         {
+            Console.Clear();
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Konton för {userAccounts[userID,0]}\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            for (int i = 1; i < userAccounts.GetLength(0); i++)
+            {
+                Console.WriteLine(userAccounts[userID, i]);
+            }
         }
     }
 }
