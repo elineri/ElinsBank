@@ -27,6 +27,44 @@ namespace ElinsBank
             userpin[3] = "1234";
             userpin[4] = "1234";
 
+            // User Accounts
+            string[,] userAccounts = new string[5, 6];
+
+            // User 1
+            userAccounts[0, 0] = "elin.ericstam"; // Set username
+            userAccounts[0, 1] = "Huvudkonto"; // Set first account name
+            userAccounts[0, 2] = "20000,00"; // Set first account balance
+            userAccounts[0, 3] = "Sparkonto"; // Set second account name
+            userAccounts[0, 4] = "30000,00"; // Set second account balance
+
+            // User 2
+            userAccounts[1, 0] = "anas.alhussain";
+            userAccounts[1, 1] = "Huvudkonto";
+            userAccounts[1, 2] = "40000,00";
+            userAccounts[1, 3] = "Sparkonto";
+            userAccounts[1, 4] = "130000,00";
+
+            // User 3
+            userAccounts[2, 0] = "tobias.landen";
+            userAccounts[2, 1] = "Huvudkonto";
+            userAccounts[2, 2] = "30000,00";
+            userAccounts[2, 3] = "Sparkonto";
+            userAccounts[2, 4] = "90000,00";
+
+            // User 4
+            userAccounts[3, 0] = "malin.claesson";
+            userAccounts[3, 1] = "Huvudkonto";
+            userAccounts[3, 2] = "10000,00";
+            userAccounts[3, 3] = "Sparkonto";
+            userAccounts[3, 4] = "40000,00";
+
+            // User 5
+            userAccounts[4, 0] = "fredrik.strandberg";
+            userAccounts[4, 1] = "Huvudkonto";
+            userAccounts[4, 2] = "50000,00";
+            userAccounts[4, 3] = "Sparkonto";
+            userAccounts[4, 4] = "65000,00";
+
             Console.Write("\nAnvändarnamn: "); //TODO Trycatch
             string userName = Console.ReadLine().ToLower();
 
@@ -77,6 +115,7 @@ namespace ElinsBank
                 switch (menuSelection)
                 {
                     case 1: // Se konton och saldo
+                        CheckAccounts();
                         BackToMenu();
                         break;
                     case 2: // Överföring mellan konton
@@ -101,6 +140,11 @@ namespace ElinsBank
             Console.WriteLine("\nKlicka enter för att komma till huvudmenyn");
             Console.ReadLine(); // TODO Fixa enter
             Console.Clear();
+        }
+
+        public static void CheckAccounts()
+        {
+
         }
     }
 }
