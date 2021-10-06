@@ -6,6 +6,9 @@ namespace ElinsBank
     {
         static void Main(string[] args)
         {
+            bool isLoggedIn = false;
+            int loginAttempts = 3;
+
             Console.WriteLine("Välkommen till Elins bank!");
 
             // Users
@@ -24,7 +27,29 @@ namespace ElinsBank
             userpin[3] = "1234";
             userpin[4] = "1234";
 
-            
+            Console.Write("\nAnvändarnamn: "); //TODO Trycatch
+            string userName = Console.ReadLine().ToLower();
+
+            int userID = Array.IndexOf(user, userName); // Matches username with correct password
+
+            while (loginAttempts > 0 && isLoggedIn == false)
+            {
+                Console.Write("Pinkod: ");
+                string pin = Console.ReadLine();
+
+                loginAttempts--;
+
+                if (pin == userpin[userID] && userName == user[userID])
+                {
+                    isLoggedIn = true;
+                    Console.Clear();
+                    Console.WriteLine("Du är nu inloggad som {0}!\n", userName);
+                }
+                else
+                {
+                    Console.WriteLine("Fel pinkod. Du har {0} antal försök kvar\n", loginAttempts);
+                }
+            }
         }
     }
 }
