@@ -202,7 +202,7 @@ namespace ElinsBank
                 }
             }
 
-            // Convert balance from strng to decimal for the From account
+            // Convert balance from string to decimal for the From account
             decimal balanceAccountFrom = decimal.Parse(userAccounts[userID, fromAccount + 1]);
 
             // User input account transfer To
@@ -232,7 +232,56 @@ namespace ElinsBank
 
         public static void AccountWithdrawal(string[,] userAccounts, int userID)
         {
+            Console.Clear();
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Uttag av pengar.\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            // Prints accounts and balance
+            for (int i = 1; i < userAccounts.GetLength(0); i++)
+            {
+                if (!(i % 2 == 0))
+                {
+                    Console.Write(i + ". " + userAccounts[userID, i] + ": \t"); // TODO Fixa nummer för alternativ
+                }
+                else
+                {
+                    Console.WriteLine(userAccounts[userID, i]);
+                }
+            }
+
+            // User input account transfer From
+            Console.Write("\nAnge nummer för det konto du vill ta ut pengar ifrån: ");
+            int fromAccount = Int32.Parse(Console.ReadLine());
+
+            for (int i = 0; i < userAccounts.GetLength(0); i++)
+            {
+                if (fromAccount == i && fromAccount % 2 == 0)
+                {
+                    Console.WriteLine($"Du kan ta ut totalt {userAccounts[userID, i]} kr från {userAccounts[userID, i + 1]}");
+                }
+                else if (fromAccount == i && !(fromAccount % 2 == 0))
+                {
+                    Console.WriteLine($"Du kan ta ut totalt {userAccounts[userID, i + 1]} kr från {userAccounts[userID, i]}");
+                }
+            }
+
+            Console.Write("Hur mycket vill du ta ut: ");
+            decimal withdrawal = decimal.Parse(Console.ReadLine());
+
+            // Convert balance from string to decimal for the From account
+            decimal balanceAccountFrom = decimal.Parse(userAccounts[userID, fromAccount + 1]);
+
+            // Set new account balance
+            balanceAccountFrom = balanceAccountFrom - withdrawal; 
+            string newBalanceFrom = balanceAccountFrom.ToString();
+            userAccounts[userID, fromAccount + 1] = newBalanceFrom;
+
+            Console.WriteLine($"\nDu har tagit ut {withdrawal} kr från {userAccounts[userID, fromAccount]}");
+            Console.WriteLine("Nytt saldo är: {0} kr", balanceAccountFrom);
+
+            
         }
     }
 }
