@@ -9,7 +9,7 @@ namespace ElinsBank
             bool isLoggedIn = false;
             int loginAttempts = 3;
 
-            Console.WriteLine("Välkommen till Elins bank!");
+            Console.WriteLine("Välkommen till Elins bank!\nAnge användarnamn (förnamn.efternamn) samt en fyrsiffrig pinkod för att logga in.");
 
             // Users
             string[] user = new string[5];
@@ -126,7 +126,7 @@ namespace ElinsBank
                         BackToMenu();
                         break;
                     case 4: // Logga ut
-                        run = false;
+                        run = false; // TODO Fixa utloggning
                         break;
                     default:
                         Console.WriteLine("Ogiltligt val. Vänligen klicka enter och välj igen.");
@@ -169,20 +169,43 @@ namespace ElinsBank
             Console.Clear();
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Överföring mellan konton.\nAnge kontonamn för det konto du vill föra över ifrån.\n");
+            Console.WriteLine($"Överföring mellan konton.\n");
             Console.ForegroundColor = ConsoleColor.Gray;
 
+            // Prints accounts and balance
             for (int i = 1; i < userAccounts.GetLength(0); i++)
             {
                 if (!(i % 2 == 0))
                 {
-                    Console.Write(userAccounts[userID, i] + ": \t");
+                    Console.Write(i + ". " + userAccounts[userID, i] + ": \t"); // TODO Fixa nummer för alternativ
                 }
                 else
                 {
                     Console.WriteLine(userAccounts[userID, i]);
                 }
             }
+
+            Console.Write("\nAnge nummer för det konto du vill föra över ifrån: ");
+            int fromAccount = Int32.Parse(Console.ReadLine());
+
+            for (int i = 0; i < userAccounts.GetLength(0); i++)
+            {
+                if (fromAccount == i && fromAccount % 2 == 0)
+                {
+                    Console.WriteLine($"Du kan föra över totalt {userAccounts[userID, i]} kr från {userAccounts[userID, i + 1]}");
+                }
+                else if (fromAccount == i && !(fromAccount % 2 == 0))
+                {
+                    Console.WriteLine($"Du kan föra över totalt {userAccounts[userID, i + 1]} kr från {userAccounts[userID, i]}");
+                }
+            }
+
+            Console.Write("\nAnge nummer för det konto du vill föra över till: ");
+            int toAccount = Int32.Parse(Console.ReadLine());
+
+            Console.Write("\nAnge summa att föra över: ");
+            decimal transfer = decimal.Parse(Console.ReadLine());
+            Console.WriteLine(transfer);
         }
     }
 }
