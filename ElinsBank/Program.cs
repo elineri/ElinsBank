@@ -119,6 +119,7 @@ namespace ElinsBank
                         BackToMenu();
                         break;
                     case 2: // Överföring mellan konton
+                        AccountsTransfer(userAccounts, userID);
                         BackToMenu();
                         break;
                     case 3: // Ta ut pengar
@@ -148,6 +149,27 @@ namespace ElinsBank
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"Konton för {userAccounts[userID,0]}\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            for (int i = 1; i < userAccounts.GetLength(0); i++)
+            {
+                if (!(i % 2 == 0))
+                {
+                    Console.Write(userAccounts[userID, i] + ": \t");
+                }
+                else
+                {
+                    Console.WriteLine(userAccounts[userID, i]);
+                }
+            }
+        }
+
+        public static void AccountsTransfer(string[,] userAccounts, int userID)
+        {
+            Console.Clear();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Överföring mellan konton.\nAnge kontonamn för det konto du vill föra över ifrån.\n");
             Console.ForegroundColor = ConsoleColor.Gray;
 
             for (int i = 1; i < userAccounts.GetLength(0); i++)
