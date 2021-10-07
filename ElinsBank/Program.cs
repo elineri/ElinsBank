@@ -152,7 +152,14 @@ namespace ElinsBank
 
             for (int i = 1; i < userAccounts.GetLength(0); i++)
             {
-                Console.WriteLine(userAccounts[userID, i]);
+                if (!(i % 2 == 0))
+                {
+                    Console.Write(userAccounts[userID, i] + ": \t");
+                }
+                else
+                {
+                    Console.WriteLine(userAccounts[userID, i]);
+                }
             }
         }
     }
