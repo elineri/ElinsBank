@@ -185,6 +185,7 @@ namespace ElinsBank
                 }
             }
 
+            // User input account transfer From
             Console.Write("\nAnge nummer för det konto du vill föra över ifrån: ");
             int fromAccount = Int32.Parse(Console.ReadLine());
 
@@ -200,12 +201,34 @@ namespace ElinsBank
                 }
             }
 
+            // Convert balance from strng to decimal for the From account
+            decimal balanceAccountFrom = decimal.Parse(userAccounts[userID, fromAccount + 1]);
+
+            // User input account transfer To
             Console.Write("\nAnge nummer för det konto du vill föra över till: ");
             int toAccount = Int32.Parse(Console.ReadLine());
 
+            // Convert balance from string to decimal for the To account.
+            decimal balanceAccountTo = decimal.Parse(userAccounts[userID, fromAccount + 1]);
+
+            // User input amount to transfer
             Console.Write("\nAnge summa att föra över: ");
             decimal transfer = decimal.Parse(Console.ReadLine());
-            Console.WriteLine(transfer);
+
+            // Add and withdraw money to accounts
+            balanceAccountFrom = balanceAccountFrom - transfer;
+            balanceAccountTo = balanceAccountTo + transfer;
+
+            // Set new balance to accounts
+            string newBalanceFrom = balanceAccountFrom.ToString();
+            userAccounts[userID, fromAccount + 1] = newBalanceFrom;
+
+            string newBalanceTo = balanceAccountTo.ToString();
+            userAccounts[userID, toAccount + 1] = newBalanceTo;
+
+            Console.WriteLine($"\nDu har fört över {transfer} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}");
+
+
         }
     }
 }
