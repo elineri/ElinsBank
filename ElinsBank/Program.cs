@@ -123,6 +123,7 @@ namespace ElinsBank
                         BackToMenu();
                         break;
                     case 3: // Ta ut pengar
+                        AccountWithdrawal(userAccounts, userID);
                         BackToMenu();
                         break;
                     case 4: // Logga ut
@@ -227,7 +228,10 @@ namespace ElinsBank
             userAccounts[userID, toAccount + 1] = newBalanceTo;
 
             Console.WriteLine($"\nDu har fört över {transfer} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}");
+        }
 
+        public static void AccountWithdrawal(string[,] userAccounts, int userID)
+        {
 
         }
     }
