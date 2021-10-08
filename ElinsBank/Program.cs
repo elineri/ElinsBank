@@ -7,7 +7,6 @@ namespace ElinsBank
         static void Main(string[] args)
         {
             bool isLoggedIn = false;
-            //int loginAttempts = 3;
             int userID = 0;
 
             // User Accounts
@@ -56,55 +55,7 @@ namespace ElinsBank
             }
         }
 
-        public static void Menu(string[,] userAccounts, int userID, out bool isLoggedIn)
-        {
-            bool run = true;
-            isLoggedIn = true;
-
-            while (run)
-            {
-                // Prints menu options
-                Console.WriteLine("Välj vad du vill göra\n");
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("1. Se dina konton och saldo");
-                Console.WriteLine("2. Överföring mellan konton");
-                Console.WriteLine("3. Ta ut pengar");
-                Console.WriteLine("4. Logga ut");
-                Console.ForegroundColor = ConsoleColor.Gray;
-
-                int menuSelection = Int32.Parse(Console.ReadLine());
-
-                switch (menuSelection)
-                {
-                    case 1: // Se konton och saldo
-                        CheckAccounts(userAccounts, userID);
-                        BackToMenu();
-                        break;
-                    case 2: // Överföring mellan konton
-                        AccountsTransfer(userAccounts, userID);
-                        BackToMenu();
-                        break;
-                    case 3: // Ta ut pengar
-                        AccountWithdrawal(userAccounts, userID);
-                        BackToMenu();
-                        break;
-                    case 4: // Logga ut
-                        isLoggedIn = false;
-                        Console.Clear();
-                        Console.WriteLine("Du är nu utloggad.\n");
-                        LogIn(out isLoggedIn, out userID);
-                        run = false; // TODO Fixa utloggning
-                        break;
-                    default:
-                        Console.WriteLine("Ogiltligt val. Vänligen klicka enter och välj igen.");
-                        Console.ReadLine(); // TODO Fixa enter
-                        Console.Clear();
-                        break;
-                }
-            }
-        }
-        
-        public static void LogIn(out bool isLoggedIn, out int userID)
+        public static void LogIn(out bool isLoggedIn, out int userID) // Welcome message and login
         {
             isLoggedIn = false;
             int loginAttempts = 3;
@@ -152,14 +103,55 @@ namespace ElinsBank
             }
         }
 
-        public static void BackToMenu() // Gå tillbaka till huvudmenyn
+        public static void Menu(string[,] userAccounts, int userID, out bool isLoggedIn) // Menu when logged in
         {
-            Console.WriteLine("\nKlicka enter för att komma till huvudmenyn");
-            Console.ReadLine(); // TODO Fixa enter
-            Console.Clear();
-        }
+            bool run = true;
+            isLoggedIn = true;
 
-        public static void CheckAccounts(string[,] userAccounts, int userID) // Se konton och saldo
+            while (run)
+            {
+                // Prints menu options
+                Console.WriteLine("Välj vad du vill göra\n");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("1. Se dina konton och saldo");
+                Console.WriteLine("2. Överföring mellan konton");
+                Console.WriteLine("3. Ta ut pengar");
+                Console.WriteLine("4. Logga ut");
+                Console.ForegroundColor = ConsoleColor.Gray;
+
+                int menuSelection = Int32.Parse(Console.ReadLine());
+
+                switch (menuSelection)
+                {
+                    case 1: // Se konton och saldo
+                        CheckAccounts(userAccounts, userID);
+                        BackToMenu();
+                        break;
+                    case 2: // Överföring mellan konton
+                        AccountsTransfer(userAccounts, userID);
+                        BackToMenu();
+                        break;
+                    case 3: // Ta ut pengar
+                        AccountWithdrawal(userAccounts, userID);
+                        BackToMenu();
+                        break;
+                    case 4: // Logga ut
+                        isLoggedIn = false;
+                        Console.Clear();
+                        Console.WriteLine("Du är nu utloggad.\n");
+                        LogIn(out isLoggedIn, out userID);
+                        run = false; // TODO Fixa utloggning
+                        break;
+                    default:
+                        Console.WriteLine("Ogiltligt val. Vänligen klicka enter och välj igen.");
+                        Console.ReadLine(); // TODO Fixa enter
+                        Console.Clear();
+                        break;
+                }
+            }
+        }
+        
+        public static void CheckAccounts(string[,] userAccounts, int userID) // See accounts and balance
         {
             Console.Clear();
 
@@ -180,7 +172,7 @@ namespace ElinsBank
             }
         }
 
-        public static void AccountsTransfer(string[,] userAccounts, int userID) // Överföring mellan konton
+        public static void AccountsTransfer(string[,] userAccounts, int userID) // Transfer between accounts
         {
             Console.Clear();
 
@@ -242,10 +234,13 @@ namespace ElinsBank
             string newBalanceTo = balanceAccountTo.ToString();
             userAccounts[userID, toAccount + 1] = newBalanceTo;
 
-            Console.WriteLine($"\nDu har fört över {transfer} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}");
+            Console.WriteLine("\n\t**********************");
+            Console.WriteLine($"\nDu har fört över {transfer} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}.\n\nNytt saldo:");
+            Console.WriteLine(userAccounts[userID, fromAccount] + ":\t" + newBalanceFrom);
+            Console.WriteLine(userAccounts[userID, toAccount] + ":\t" + newBalanceTo);
         }
 
-        public static void AccountWithdrawal(string[,] userAccounts, int userID) // Uttag av pengar från konto
+        public static void AccountWithdrawal(string[,] userAccounts, int userID) // Withdrawal fron accounts
         {
             Console.Clear();
 
@@ -296,6 +291,13 @@ namespace ElinsBank
             // Print new balance
             Console.WriteLine($"\nDu har tagit ut {withdrawal} kr från {userAccounts[userID, fromAccount]}");
             Console.WriteLine("Nytt saldo är: {0} kr", balanceAccountFrom);
+        }
+
+        public static void BackToMenu() // go back to Main menu
+        {
+            Console.WriteLine("\nKlicka enter för att komma till huvudmenyn");
+            Console.ReadLine(); // TODO Fixa enter
+            Console.Clear();
         }
     }
 }
