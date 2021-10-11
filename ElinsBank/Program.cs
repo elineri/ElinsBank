@@ -8,6 +8,9 @@ namespace ElinsBank
         {
             bool isLoggedIn = false;
             int userID = 0;
+            string[] user = new string[5];
+            string[] userpin = new string[5];
+            string userName;
 
             // User Accounts
             string[,] userAccounts = new string[5, 6];
@@ -47,21 +50,21 @@ namespace ElinsBank
             userAccounts[4, 3] = "Sparkonto";
             userAccounts[4, 4] = "65000,00";
 
-            LogIn(out isLoggedIn, out userID);
+            LogIn(out isLoggedIn, out userID, out user, out userpin, out userName);
 
             while (isLoggedIn == true)
             {
-                Menu(userAccounts, userID, out isLoggedIn);
+                Menu(userAccounts, userID, user, userpin, userName, out isLoggedIn);
             }
         }
 
-        public static void LogIn(out bool isLoggedIn, out int userID) // Welcome message and login
+        public static void LogIn(out bool isLoggedIn, out int userID, out string[] user, out string[] userpin, out string userName) // Welcome message and login
         {
             isLoggedIn = false;
             int loginAttempts = 3;
 
             // Users
-            string[] user = new string[5];
+            user = new string[5];
             user[0] = "elin.ericstam";
             user[1] = "anas.alhussain";
             user[2] = "tobias.landen";
@@ -69,7 +72,7 @@ namespace ElinsBank
             user[4] = "fredrik.strandberg";
 
             // User passwords
-            string[] userpin = new string[5];
+            userpin = new string[5];
             userpin[0] = "1234";
             userpin[1] = "1234";
             userpin[2] = "1234";
@@ -79,7 +82,7 @@ namespace ElinsBank
             Console.WriteLine("Välkommen till Elins bank!\nAnge användarnamn (förnamn.efternamn) samt en fyrsiffrig pinkod för att logga in.");
 
             Console.Write("\nAnvändarnamn: "); //TODO Trycatch
-            string userName = Console.ReadLine().ToLower();
+            userName = Console.ReadLine().ToLower();
 
             userID = Array.IndexOf(user, userName); // Matches username with correct password
 
@@ -103,7 +106,7 @@ namespace ElinsBank
             }
         }
 
-        public static void Menu(string[,] userAccounts, int userID, out bool isLoggedIn) // Menu when logged in
+        public static void Menu(string[,] userAccounts, int userID, string[] user, string[] userpin, string userName, out bool isLoggedIn) // Menu when logged in
         {
             bool run = true;
             isLoggedIn = true;
@@ -132,14 +135,14 @@ namespace ElinsBank
                         BackToMenu();
                         break;
                     case 3: // Ta ut pengar
-                        AccountWithdrawal(userAccounts, userID);
+                        AccountWithdrawal(userAccounts, userID, user, userpin, userName);
                         BackToMenu();
                         break;
                     case 4: // Logga ut
                         isLoggedIn = false;
                         Console.Clear();
                         Console.WriteLine("Du är nu utloggad.\n");
-                        LogIn(out isLoggedIn, out userID);
+                        LogIn(out isLoggedIn, out userID, out user, out userpin, out userName);
                         run = false; // TODO Fixa utloggning
                         break;
                     default:
@@ -240,7 +243,7 @@ namespace ElinsBank
             Console.WriteLine(userAccounts[userID, toAccount] + ":\t" + newBalanceTo);
         }
 
-        public static void AccountWithdrawal(string[,] userAccounts, int userID) // Withdrawal fron accounts
+        public static void AccountWithdrawal(string[,] userAccounts, int userID, string[] user, string[] userpin, string userName) // Withdrawal fron accounts
         {
             Console.Clear();
 
@@ -283,14 +286,24 @@ namespace ElinsBank
             // Convert balance from string to decimal for the From account
             decimal balanceAccountFrom = decimal.Parse(userAccounts[userID, fromAccount + 1]);
 
-            // Set new account balance
-            balanceAccountFrom = balanceAccountFrom - withdrawal; 
-            string newBalanceFrom = balanceAccountFrom.ToString();
-            userAccounts[userID, fromAccount + 1] = newBalanceFrom;
+            Console.Write("Ange pinkod: ");
+            string pin = Console.ReadLine();
 
-            // Print new balance
-            Console.WriteLine($"\nDu har tagit ut {withdrawal} kr från {userAccounts[userID, fromAccount]}");
-            Console.WriteLine("Nytt saldo är: {0} kr", balanceAccountFrom);
+            if (pin == userpin[userID] && userName == user[userID])
+            {
+                // Set new account balance
+                balanceAccountFrom = balanceAccountFrom - withdrawal;
+                string newBalanceFrom = balanceAccountFrom.ToString();
+                userAccounts[userID, fromAccount + 1] = newBalanceFrom;
+
+                // Print new balance
+                Console.WriteLine($"\nDu har tagit ut {withdrawal} kr från {userAccounts[userID, fromAccount]}");
+                Console.WriteLine("Nytt saldo är: {0} kr", balanceAccountFrom);
+            }
+            else
+            {
+                Console.WriteLine("Felaktig pinkod. Pengarna har inte förts över.");
+            }
         }
 
         public static void BackToMenu() // go back to Main menu
