@@ -128,19 +128,19 @@ namespace ElinsBank
 
                 switch (menuSelection)
                 {
-                    case 1: // Se konton och saldo
+                    case 1: // View accounts and balance
                         CheckAccounts(userAccounts, userID);
                         BackToMenu();
                         break;
-                    case 2: // Överföring mellan konton
+                    case 2: // Transfer between accounts
                         AccountsTransfer(userAccounts, userID);
                         BackToMenu();
                         break;
-                    case 3: // Ta ut pengar
+                    case 3: // Withdraw money
                         AccountWithdrawal(userAccounts, userID, user, userpin, userName);
                         BackToMenu();
                         break;
-                    case 4: // Logga ut
+                    case 4: // Log out
                         isLoggedIn = false;
                         Console.Clear();
                         Console.WriteLine("Du är nu utloggad.\n");
