@@ -147,7 +147,7 @@ namespace ElinsBank
                         break;
                     default:
                         Console.WriteLine("Ogiltligt val. Vänligen klicka enter och välj igen.");
-                        Console.ReadLine(); // TODO Fixa enter
+                        Console.ReadKey(); // TODO Fixa enter
                         Console.Clear();
                         break;
                 }
@@ -228,39 +228,85 @@ namespace ElinsBank
             Console.Write("\nAnge nummer för det konto du vill föra över till: ");
             int toAccount = Int32.Parse(Console.ReadLine());
 
-            if (toAccount > 1)
-                toAccount++;
+            if(toAccount > 1)
+                    toAccount++;
 
-            // Convert balance from string to decimal for the To account.
-            decimal balanceAccountTo = decimal.Parse(userAccounts[userID, toAccount + 1]);
-
-            // User input amount to transfer
-            Console.Write("\nAnge summa att föra över: ");
-            decimal transferAmount = decimal.Parse(Console.ReadLine());
-
-            if (transferAmount <= balanceAccountFrom)
-            {
-                // Add and withdraw money to accounts
-                balanceAccountFrom = balanceAccountFrom - transferAmount;
-                balanceAccountTo = balanceAccountTo + transferAmount;
-
-                // Set new balance to accounts
-                string newBalanceFrom = balanceAccountFrom.ToString();
-                userAccounts[userID, fromAccount + 1] = newBalanceFrom;
-
-                string newBalanceTo = balanceAccountTo.ToString();
-                userAccounts[userID, toAccount + 1] = newBalanceTo;
-
-                Console.WriteLine("\n\t**********************");
-                Console.WriteLine($"\nDu har fört över {transferAmount} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}.\n\nNytt saldo:");
-
-                Console.WriteLine(userAccounts[userID, fromAccount] + ":\t" + userAccounts[userID, fromAccount + 1]);
-                Console.WriteLine(userAccounts[userID, toAccount] + ":\t" + userAccounts[userID, toAccount + 1]);
+            if (toAccount == fromAccount || toAccount + 1 == fromAccount + 1)
+            {   Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("Det går inte att föra över pengar till samma konto");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
             else
             {
-                Console.WriteLine("Summan är för stor för föra över. Kontot har otillräckligt saldo.");
+                // Convert balance from string to decimal for the To account.
+                decimal balanceAccountTo = decimal.Parse(userAccounts[userID, toAccount + 1]);
+
+                // User input amount to transfer
+                Console.Write("\nAnge summa att föra över: ");
+                decimal transferAmount = decimal.Parse(Console.ReadLine());
+
+                if (transferAmount <= balanceAccountFrom)
+                {
+                    // Add and withdraw money to accounts
+                    balanceAccountFrom = balanceAccountFrom - transferAmount;
+                    balanceAccountTo = balanceAccountTo + transferAmount;
+
+                    // Set new balance to accounts
+                    string newBalanceFrom = balanceAccountFrom.ToString();
+                    userAccounts[userID, fromAccount + 1] = newBalanceFrom;
+
+                    string newBalanceTo = balanceAccountTo.ToString();
+                    userAccounts[userID, toAccount + 1] = newBalanceTo;
+
+                    Console.WriteLine("\n\t**********************");
+                    Console.WriteLine($"\nDu har fört över {transferAmount} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}.\n\nNytt saldo:");
+
+                    Console.WriteLine(userAccounts[userID, fromAccount] + ":\t" + userAccounts[userID, fromAccount + 1]);
+                    Console.WriteLine(userAccounts[userID, toAccount] + ":\t" + userAccounts[userID, toAccount + 1]);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("\nSumman är för stor för föra över. Kontot har otillräckligt saldo.");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
             }
+
+            //if (toAccount > 1)
+            //    toAccount++;
+
+            //// Convert balance from string to decimal for the To account.
+            //decimal balanceAccountTo = decimal.Parse(userAccounts[userID, toAccount + 1]);
+
+            //// User input amount to transfer
+            //Console.Write("\nAnge summa att föra över: ");
+            //decimal transferAmount = decimal.Parse(Console.ReadLine());
+
+            //if (transferAmount <= balanceAccountFrom)
+            //{
+            //    // Add and withdraw money to accounts
+            //    balanceAccountFrom = balanceAccountFrom - transferAmount;
+            //    balanceAccountTo = balanceAccountTo + transferAmount;
+
+            //    // Set new balance to accounts
+            //    string newBalanceFrom = balanceAccountFrom.ToString();
+            //    userAccounts[userID, fromAccount + 1] = newBalanceFrom;
+
+            //    string newBalanceTo = balanceAccountTo.ToString();
+            //    userAccounts[userID, toAccount + 1] = newBalanceTo;
+
+            //    Console.WriteLine("\n\t**********************");
+            //    Console.WriteLine($"\nDu har fört över {transferAmount} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}.\n\nNytt saldo:");
+
+            //    Console.WriteLine(userAccounts[userID, fromAccount] + ":\t" + userAccounts[userID, fromAccount + 1]);
+            //    Console.WriteLine(userAccounts[userID, toAccount] + ":\t" + userAccounts[userID, toAccount + 1]);
+            //}
+            //else
+            //{
+            //    Console.ForegroundColor = ConsoleColor.DarkRed;
+            //    Console.WriteLine("\nSumman är för stor för föra över. Kontot har otillräckligt saldo.");
+            //    Console.ForegroundColor = ConsoleColor.Gray;
+            //}
         }
 
         public static void AccountWithdrawal(string[,] userAccounts, int userID, string[] user, string[] userpin, string userName) // Withdrawal fron accounts
@@ -334,18 +380,22 @@ namespace ElinsBank
             }
             else if (!(withdrawal <= balanceAccountFrom))
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("Summan är för stor för att ta ut. Kontot har otillräckligt saldo.");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
-            else if (pin == userpin[userID] && userName == user[userID] && withdrawal <= balanceAccountFrom)
+            else if (!(pin == userpin[userID] && userName == user[userID]))
             {
-                Console.WriteLine("Felaktig pinkod. Pengarna har inte förts över.");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\nFelaktig pinkod. Pengarna har inte tagits ut.");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
         public static void BackToMenu() // Go back to Main menu
         {
             Console.WriteLine("\nKlicka enter för att komma till huvudmenyn");
-            Console.ReadLine(); // TODO Fixa enter
+            Console.ReadKey(); // TODO Fixa enter
             Console.Clear();
         }
     }
