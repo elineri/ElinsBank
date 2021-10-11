@@ -154,7 +154,7 @@ namespace ElinsBank
             }
         }
         
-        public static void CheckAccounts(string[,] userAccounts, int userID) // See accounts and balance
+        public static void CheckAccounts(string[,] userAccounts, int userID) // View accounts and balance
         {
             Console.Clear();
 
@@ -162,11 +162,14 @@ namespace ElinsBank
             Console.WriteLine($"Konton för {userAccounts[userID,0]}\n");
             Console.ForegroundColor = ConsoleColor.Gray;
 
+            int accountNum = 1;
+
             for (int i = 1; i < userAccounts.GetLength(0); i++)
             {
                 if (!(i % 2 == 0))
                 {
-                    Console.Write(userAccounts[userID, i] + ": \t");
+                    Console.Write(accountNum + ". " + userAccounts[userID, i] + ": \t");
+                    accountNum++;
                 }
                 else
                 {
@@ -235,22 +238,29 @@ namespace ElinsBank
             Console.Write("\nAnge summa att föra över: ");
             decimal transferAmount = decimal.Parse(Console.ReadLine());
 
-            // Add and withdraw money to accounts
-            balanceAccountFrom = balanceAccountFrom - transferAmount;
-            balanceAccountTo = balanceAccountTo + transferAmount;
+            if (transferAmount <= balanceAccountFrom)
+            {
+                // Add and withdraw money to accounts
+                balanceAccountFrom = balanceAccountFrom - transferAmount;
+                balanceAccountTo = balanceAccountTo + transferAmount;
 
-            // Set new balance to accounts
-            string newBalanceFrom = balanceAccountFrom.ToString();
-            userAccounts[userID, fromAccount + 1] = newBalanceFrom;
+                // Set new balance to accounts
+                string newBalanceFrom = balanceAccountFrom.ToString();
+                userAccounts[userID, fromAccount + 1] = newBalanceFrom;
 
-            string newBalanceTo = balanceAccountTo.ToString();
-            userAccounts[userID, toAccount + 1] = newBalanceTo;
+                string newBalanceTo = balanceAccountTo.ToString();
+                userAccounts[userID, toAccount + 1] = newBalanceTo;
 
-            Console.WriteLine("\n\t**********************");
-            Console.WriteLine($"\nDu har fört över {transferAmount} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}.\n\nNytt saldo:");
+                Console.WriteLine("\n\t**********************");
+                Console.WriteLine($"\nDu har fört över {transferAmount} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}.\n\nNytt saldo:");
 
-            Console.WriteLine(userAccounts[userID, fromAccount] + ":\t" + userAccounts[userID, fromAccount + 1]);
-            Console.WriteLine(userAccounts[userID, toAccount] + ":\t" + userAccounts[userID, toAccount + 1]);
+                Console.WriteLine(userAccounts[userID, fromAccount] + ":\t" + userAccounts[userID, fromAccount + 1]);
+                Console.WriteLine(userAccounts[userID, toAccount] + ":\t" + userAccounts[userID, toAccount + 1]);
+            }
+            else
+            {
+                Console.WriteLine("Summan är för stor för föra över. Kontot har otillräckligt saldo.");
+            }
         }
 
         public static void AccountWithdrawal(string[,] userAccounts, int userID, string[] user, string[] userpin, string userName) // Withdrawal fron accounts
@@ -303,13 +313,14 @@ namespace ElinsBank
             Console.Write("Hur mycket vill du ta ut: ");
             decimal withdrawal = decimal.Parse(Console.ReadLine());
 
-            // Convert balance from string to decimal for the From account
+            // Converts balance from string to decimal for the From account
             decimal balanceAccountFrom = decimal.Parse(userAccounts[userID, fromAccount + 1]);
 
+            // User input for password / pincode
             Console.Write("Ange pinkod: ");
             string pin = Console.ReadLine();
 
-            if (pin == userpin[userID] && userName == user[userID])
+            if (pin == userpin[userID] && userName == user[userID] && withdrawal <= balanceAccountFrom)
             {
                 // Set new account balance
                 balanceAccountFrom = balanceAccountFrom - withdrawal;
@@ -317,16 +328,21 @@ namespace ElinsBank
                 userAccounts[userID, fromAccount + 1] = newBalanceFrom;
 
                 // Print new balance
+                Console.WriteLine("\n\t**********************");
                 Console.WriteLine($"\nDu har tagit ut {withdrawal} kr från {userAccounts[userID, fromAccount]}");
                 Console.WriteLine("Nytt saldo är: {0} kr", balanceAccountFrom);
             }
-            else
+            else if (!(withdrawal <= balanceAccountFrom))
+            {
+                Console.WriteLine("Summan är för stor för att ta ut. Kontot har otillräckligt saldo.");
+            }
+            else if (pin == userpin[userID] && userName == user[userID] && withdrawal <= balanceAccountFrom)
             {
                 Console.WriteLine("Felaktig pinkod. Pengarna har inte förts över.");
             }
         }
 
-        public static void BackToMenu() // go back to Main menu
+        public static void BackToMenu() // Go back to Main menu
         {
             Console.WriteLine("\nKlicka enter för att komma till huvudmenyn");
             Console.ReadLine(); // TODO Fixa enter
