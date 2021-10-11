@@ -18,37 +18,37 @@ namespace ElinsBank
             // User 1
             userAccounts[0, 0] = "elin.ericstam"; // Set username
             userAccounts[0, 1] = "Huvudkonto"; // Set first account name
-            userAccounts[0, 2] = "20000,00"; // Set first account balance
+            userAccounts[0, 2] = "20234,50"; // Set first account balance
             userAccounts[0, 3] = "Sparkonto"; // Set second account name
-            userAccounts[0, 4] = "30000,00"; // Set second account balance
+            userAccounts[0, 4] = "30035,00"; // Set second account balance
 
             // User 2
-            userAccounts[1, 0] = "anas.alhussain";
-            userAccounts[1, 1] = "Huvudkonto";
-            userAccounts[1, 2] = "40000,00";
-            userAccounts[1, 3] = "Sparkonto";
-            userAccounts[1, 4] = "130000,00";
+            userAccounts[1, 0] = "anas.alhussain"; // Set username
+            userAccounts[1, 1] = "Huvudkonto"; // Set first account name
+            userAccounts[1, 2] = "40341,00"; // Set first account balance
+            userAccounts[1, 3] = "Sparkonto"; // Set second account name
+            userAccounts[1, 4] = "130160,25"; // Set second account balance
 
             // User 3
-            userAccounts[2, 0] = "tobias.landen";
-            userAccounts[2, 1] = "Huvudkonto";
-            userAccounts[2, 2] = "30000,00";
-            userAccounts[2, 3] = "Sparkonto";
-            userAccounts[2, 4] = "90000,00";
+            userAccounts[2, 0] = "tobias.landen"; // Set username
+            userAccounts[2, 1] = "Huvudkonto"; // Set first account name
+            userAccounts[2, 2] = "32198,50"; // Set first account balance
+            userAccounts[2, 3] = "Sparkonto"; // Set second account name
+            userAccounts[2, 4] = "90200,00"; // Set second account balance
 
             // User 4
-            userAccounts[3, 0] = "malin.claesson";
-            userAccounts[3, 1] = "Huvudkonto";
-            userAccounts[3, 2] = "10000,00";
-            userAccounts[3, 3] = "Sparkonto";
-            userAccounts[3, 4] = "40000,00";
+            userAccounts[3, 0] = "malin.claesson"; // Set username
+            userAccounts[3, 1] = "Huvudkonto"; // Set first account name
+            userAccounts[3, 2] = "10112,25"; // Set first account balance
+            userAccounts[3, 3] = "Sparkonto"; // Set second account name
+            userAccounts[3, 4] = "40000,00"; // Set second account balance
 
             // User 5
-            userAccounts[4, 0] = "fredrik.strandberg";
-            userAccounts[4, 1] = "Huvudkonto";
-            userAccounts[4, 2] = "50000,00";
-            userAccounts[4, 3] = "Sparkonto";
-            userAccounts[4, 4] = "65000,00";
+            userAccounts[4, 0] = "fredrik.strandberg"; // Set username
+            userAccounts[4, 1] = "Huvudkonto"; // Set first account name
+            userAccounts[4, 2] = "50000,00"; // Set first account balance
+            userAccounts[4, 3] = "Sparkonto"; // Set second account name
+            userAccounts[4, 4] = "65000,00"; // Set second account balance
 
             LogIn(out isLoggedIn, out userID, out user, out userpin, out userName);
 
@@ -183,12 +183,15 @@ namespace ElinsBank
             Console.WriteLine($"Överföring mellan konton.\n");
             Console.ForegroundColor = ConsoleColor.Gray;
 
+            int accountNum = 1; // Set
+
             // Prints accounts and balance
             for (int i = 1; i < userAccounts.GetLength(0); i++)
             {
                 if (!(i % 2 == 0))
                 {
-                    Console.Write(i + ". " + userAccounts[userID, i] + ": \t"); // TODO Fixa nummer för alternativ
+                    Console.Write(accountNum + ". " + userAccounts[userID, i] + ": \t"); // TODO Fixa nummer för alternativ
+                    accountNum++;
                 }
                 else
                 {
@@ -200,15 +203,18 @@ namespace ElinsBank
             Console.Write("\nAnge nummer för det konto du vill föra över ifrån: ");
             int fromAccount = Int32.Parse(Console.ReadLine());
 
+            if (fromAccount > 1)
+                fromAccount++;
+
             for (int i = 0; i < userAccounts.GetLength(0); i++)
             {
-                if (fromAccount == i && fromAccount % 2 == 0)
-                {
-                    Console.WriteLine($"Du kan föra över totalt {userAccounts[userID, i]} kr från {userAccounts[userID, i + 1]}");
-                }
-                else if (fromAccount == i && !(fromAccount % 2 == 0))
+                if (fromAccount == i && !(fromAccount % 2 == 0))
                 {
                     Console.WriteLine($"Du kan föra över totalt {userAccounts[userID, i + 1]} kr från {userAccounts[userID, i]}");
+                }
+                else if (fromAccount == i && fromAccount % 2 == 0)
+                {
+                    Console.WriteLine($"Du kan föra över totalt {userAccounts[userID, i + 2]} kr från {userAccounts[userID, i + 1]}");
                 }
             }
 
@@ -219,16 +225,19 @@ namespace ElinsBank
             Console.Write("\nAnge nummer för det konto du vill föra över till: ");
             int toAccount = Int32.Parse(Console.ReadLine());
 
+            if (toAccount > 1)
+                toAccount++;
+
             // Convert balance from string to decimal for the To account.
-            decimal balanceAccountTo = decimal.Parse(userAccounts[userID, fromAccount + 1]);
+            decimal balanceAccountTo = decimal.Parse(userAccounts[userID, toAccount + 1]);
 
             // User input amount to transfer
             Console.Write("\nAnge summa att föra över: ");
-            decimal transfer = decimal.Parse(Console.ReadLine());
+            decimal transferAmount = decimal.Parse(Console.ReadLine());
 
             // Add and withdraw money to accounts
-            balanceAccountFrom = balanceAccountFrom - transfer;
-            balanceAccountTo = balanceAccountTo + transfer;
+            balanceAccountFrom = balanceAccountFrom - transferAmount;
+            balanceAccountTo = balanceAccountTo + transferAmount;
 
             // Set new balance to accounts
             string newBalanceFrom = balanceAccountFrom.ToString();
@@ -238,9 +247,10 @@ namespace ElinsBank
             userAccounts[userID, toAccount + 1] = newBalanceTo;
 
             Console.WriteLine("\n\t**********************");
-            Console.WriteLine($"\nDu har fört över {transfer} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}.\n\nNytt saldo:");
-            Console.WriteLine(userAccounts[userID, fromAccount] + ":\t" + newBalanceFrom);
-            Console.WriteLine(userAccounts[userID, toAccount] + ":\t" + newBalanceTo);
+            Console.WriteLine($"\nDu har fört över {transferAmount} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}.\n\nNytt saldo:");
+
+            Console.WriteLine(userAccounts[userID, fromAccount] + ":\t" + userAccounts[userID, fromAccount + 1]);
+            Console.WriteLine(userAccounts[userID, toAccount] + ":\t" + userAccounts[userID, toAccount + 1]);
         }
 
         public static void AccountWithdrawal(string[,] userAccounts, int userID, string[] user, string[] userpin, string userName) // Withdrawal fron accounts
@@ -251,12 +261,15 @@ namespace ElinsBank
             Console.WriteLine($"Uttag av pengar.\n");
             Console.ForegroundColor = ConsoleColor.Gray;
 
+            int accountNum = 1;
+
             // Prints accounts and balance
             for (int i = 1; i < userAccounts.GetLength(0); i++)
             {
                 if (!(i % 2 == 0))
                 {
-                    Console.Write(i + ". " + userAccounts[userID, i] + ": \t"); // TODO Fixa nummer för alternativ
+                    Console.Write(accountNum + ". " + userAccounts[userID, i] + ": \t"); // TODO Fixa nummer för alternativ
+                    accountNum++;
                 }
                 else
                 {
@@ -268,15 +281,22 @@ namespace ElinsBank
             Console.Write("\nAnge nummer för det konto du vill ta ut pengar ifrån: ");
             int fromAccount = Int32.Parse(Console.ReadLine());
 
-            for (int i = 0; i < userAccounts.GetLength(0); i++)
+            if (fromAccount > 1)
             {
-                if (fromAccount == i && fromAccount % 2 == 0)
-                {
-                    Console.WriteLine($"Du kan ta ut totalt {userAccounts[userID, i]} kr från {userAccounts[userID, i + 1]}");
-                }
-                else if (fromAccount == i && !(fromAccount % 2 == 0))
+                fromAccount++;
+            }
+
+            for (int i = 1; i < userAccounts.GetLength(0); i++)
+            {
+                if (fromAccount == i && !(fromAccount % 2 == 0))
                 {
                     Console.WriteLine($"Du kan ta ut totalt {userAccounts[userID, i + 1]} kr från {userAccounts[userID, i]}");
+                    // Convert balance from string to decimal for the From account
+                }
+                else if (fromAccount == i && (fromAccount % 2 == 0))
+                {
+                    Console.WriteLine($"Du kan ta ut totalt {userAccounts[userID, i + 2]} kr från {userAccounts[userID, i + 1]}");
+                    // Convert balance from string to decimal for the From account
                 }
             }
 
