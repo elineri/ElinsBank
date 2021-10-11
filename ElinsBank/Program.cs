@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace ElinsBank
 {
@@ -7,11 +8,12 @@ namespace ElinsBank
         static void Main(string[] args)
         {
             bool isLoggedIn = false;
-            int userID = 0;
+            bool run = true;
+
             string[] user = new string[5];
             string[] userpin = new string[5];
             string userName;
-            bool run = true;
+            int userID = 0;
 
             // User Accounts
             string[,] userAccounts = new string[5, 6];
@@ -58,18 +60,18 @@ namespace ElinsBank
             }
         }
 
-        public static void LogIn(out bool isLoggedIn, out int userID, out string[] user, out string[] userpin, out string userName) // Welcome message and login
+        public static void LogIn(out bool isLoggedIn, out int userID, out string[] users, out string[] userpin, out string userName) // Welcome message and login
         {
             isLoggedIn = false;
             int loginAttempts = 3;
 
             // Users
-            user = new string[5];
-            user[0] = "elin.ericstam";
-            user[1] = "anas.alhussain";
-            user[2] = "tobias.landen";
-            user[3] = "malin.claesson";
-            user[4] = "fredrik.strandberg";
+            users = new string[5];
+            users[0] = "elin.ericstam";
+            users[1] = "anas.alhussain";
+            users[2] = "tobias.landen";
+            users[3] = "malin.claesson";
+            users[4] = "fredrik.strandberg";
 
             // User passwords
             userpin = new string[5];
@@ -84,7 +86,7 @@ namespace ElinsBank
             Console.Write("\nAnvändarnamn: "); //TODO Trycatch
             userName = Console.ReadLine().ToLower();
 
-            userID = Array.IndexOf(user, userName); // Matches username with correct password
+            userID = Array.IndexOf(users, userName); // Matches username with correct password
 
             while (loginAttempts > 0 && isLoggedIn == false)
             {
@@ -93,7 +95,7 @@ namespace ElinsBank
 
                 loginAttempts--;
 
-                if (pin == userpin[userID] && userName == user[userID])
+                if (pin == userpin[userID] && userName == users[userID])
                 {
                     isLoggedIn = true;
                     Console.Clear();
@@ -142,6 +144,8 @@ namespace ElinsBank
                         isLoggedIn = false;
                         Console.Clear();
                         Console.WriteLine("Du är nu utloggad.\n");
+                        Thread.Sleep(1000);
+                        Console.Clear();
                         break;
                     default:
                         Console.WriteLine("Ogiltligt val. Vänligen klicka enter och välj igen.");
@@ -309,15 +313,14 @@ namespace ElinsBank
                 if (fromAccount == i && !(fromAccount % 2 == 0))
                 {
                     Console.WriteLine($"Du kan ta ut totalt {userAccounts[userID, i + 1]} kr från {userAccounts[userID, i]}");
-                    // Convert balance from string to decimal for the From account
                 }
                 else if (fromAccount == i && (fromAccount % 2 == 0))
                 {
                     Console.WriteLine($"Du kan ta ut totalt {userAccounts[userID, i + 2]} kr från {userAccounts[userID, i + 1]}");
-                    // Convert balance from string to decimal for the From account
                 }
             }
 
+            // User input withdrawal amount
             Console.Write("Hur mycket vill du ta ut: ");
             decimal withdrawal = decimal.Parse(Console.ReadLine());
 
@@ -328,9 +331,9 @@ namespace ElinsBank
             Console.Write("Ange pinkod: ");
             string pin = Console.ReadLine();
 
-            if (pin == userpin[userID] && userName == user[userID] && withdrawal <= balanceAccountFrom)
+            if (pin == userpin[userID] && userName == user[userID] && withdrawal <= balanceAccountFrom) // If pin correct and sufficient funds
             {
-                // Set new account balance
+                // Withdraw and set new account balance
                 balanceAccountFrom = balanceAccountFrom - withdrawal;
                 string newBalanceFrom = balanceAccountFrom.ToString();
                 userAccounts[userID, fromAccount + 1] = newBalanceFrom;
@@ -340,13 +343,13 @@ namespace ElinsBank
                 Console.WriteLine($"\nDu har tagit ut {withdrawal} kr från {userAccounts[userID, fromAccount]}");
                 Console.WriteLine("Nytt saldo är: {0} kr", balanceAccountFrom);
             }
-            else if (!(withdrawal <= balanceAccountFrom))
+            else if (!(withdrawal <= balanceAccountFrom)) // If insufficient funds 
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("Summan är för stor för att ta ut. Kontot har otillräckligt saldo.");
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            else if (!(pin == userpin[userID] && userName == user[userID]))
+            else if (!(pin == userpin[userID] && userName == user[userID])) // If pin doesn't match with username
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("\nFelaktig pinkod. Pengarna har inte tagits ut.");
