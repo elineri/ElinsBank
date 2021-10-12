@@ -235,9 +235,25 @@ namespace ElinsBank
                 }
             }
 
-            // User input account transfer From
-            Console.Write("\nAnge nummer för det konto du vill föra över ifrån: ");
-            int fromAccount = Int32.Parse(Console.ReadLine());
+            int fromAccount;
+            bool error = false;
+
+            do
+            {
+                // User input account transfer From
+                Console.Write("\nAnge nummer för det konto du vill föra över ifrån: ");
+                fromAccount = Int32.Parse(Console.ReadLine());
+
+                if (fromAccount < 1 || fromAccount > accountNum)
+                {
+                    error = true;
+                    Console.WriteLine("Ogiltligt val.");
+                }
+                else
+                {
+                    error = false;
+                }
+            } while (error == true);
 
             if (fromAccount > 1)
                 fromAccount++;
@@ -257,11 +273,27 @@ namespace ElinsBank
             // Convert balance from string to decimal for the From account
             decimal balanceAccountFrom = decimal.Parse(userAccounts[userID, fromAccount + 1]);
 
-            // User input account transfer To
-            Console.Write("\nAnge nummer för det konto du vill föra över till: ");
-            int toAccount = Int32.Parse(Console.ReadLine());
+            
+            int toAccount;
 
-            if(toAccount > 1)
+            do
+            {
+                // User input account transfer To
+                Console.Write("\nAnge nummer för det konto du vill föra över till: ");
+                toAccount = Int32.Parse(Console.ReadLine());
+
+                if (toAccount < 1 || toAccount > accountNum)
+                {
+                    error = true;
+                    Console.WriteLine("Ogiltligt val.");
+                }
+                else
+                {
+                    error = false;
+                }
+            } while (error == true);
+
+            if (toAccount > 1)
                     toAccount++;
 
             if (toAccount == fromAccount || toAccount + 1 == fromAccount + 1)
