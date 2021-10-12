@@ -81,7 +81,10 @@ namespace ElinsBank
             userpin[3] = "1234";
             userpin[4] = "1234";
 
-            Console.WriteLine("Välkommen till Elins bank!\nAnge användarnamn (förnamn.efternamn) samt en fyrsiffrig pinkod för att logga in.");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\t***** Välkommen till Elins bank! *****");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Ange användarnamn(förnamn.efternamn) samt en fyrsiffrig pinkod för att logga in.");
 
             try
             {
@@ -134,7 +137,9 @@ namespace ElinsBank
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Fel pinkod. Du har {0} antal försök kvar\n", loginAttempts);
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
             }
         }
@@ -247,7 +252,9 @@ namespace ElinsBank
                 if (fromAccount < 1 || fromAccount > accountNum)
                 {
                     error = true;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltligt val.");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
                 else
                 {
@@ -286,7 +293,9 @@ namespace ElinsBank
                 if (toAccount < 1 || toAccount > accountNum)
                 {
                     error = true;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltligt val.");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
                 else
                 {
@@ -298,7 +307,7 @@ namespace ElinsBank
                     toAccount++;
 
             if (toAccount == fromAccount || toAccount + 1 == fromAccount + 1)
-            {   Console.ForegroundColor = ConsoleColor.DarkRed;
+            {   Console.ForegroundColor = ConsoleColor.kRed;
                 Console.WriteLine("Det går inte att föra över pengar till samma konto");
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
@@ -375,7 +384,9 @@ namespace ElinsBank
                 if (fromAccount < 1 || fromAccount > accountNum)
                 {
                     error = true;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltligt val.");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
                 else
                 {
