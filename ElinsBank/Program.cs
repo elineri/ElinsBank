@@ -7,13 +7,8 @@ namespace ElinsBank
     {
         static void Main(string[] args)
         {
-            bool isLoggedIn = false;
-            bool run = true;
-
-            string[] user = new string[5];
-            string[] userpin = new string[5];
-            string userName;
-            int userID = 0;
+            bool isLoggedIn = false; // Set user not logged in
+            bool run = true; // Set the program to run
 
             // User Accounts
             string[,] userAccounts = new string[5, 6];
@@ -53,6 +48,11 @@ namespace ElinsBank
             userAccounts[4, 3] = "Sparkonto"; // Set second account name
             userAccounts[4, 4] = "65000,00"; // Set second account balance
 
+            string[] user = new string[5];
+            string[] userpin = new string[5];
+            string userName;
+            int userID = 0;
+
             while (run)
             {
                 LogIn(out isLoggedIn, out userID, out user, out userpin, out userName);
@@ -63,7 +63,7 @@ namespace ElinsBank
                 }
                 else
                 {
-                    run = false; // If the user hasn't logged in within 3 attempts the program shuts down.
+                    run = false; // If the user hasn't successfully logged in within 3 attempts the program shuts down
                 }
             }
         }
@@ -89,6 +89,7 @@ namespace ElinsBank
             userpin[3] = "4567";
             userpin[4] = "5678";
 
+            // Welcome message
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\t***** Välkommen till Elins bank! *****");
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -98,7 +99,7 @@ namespace ElinsBank
             userName = Console.ReadLine().ToLower(); // Input username
             bool userFound = false;
 
-            // Checks if the user exists and if not asks for input again
+            // Checks if the user exists and if not the program asks for input again
             do
             {
                 for (int i = 0; i < users.GetLength(0); i++)
@@ -122,20 +123,21 @@ namespace ElinsBank
 
             userID = Array.IndexOf(users, userName); // Matches username with correct password
 
+            // User input pin
             while (loginAttempts > 0 && isLoggedIn == false)
             {
                 Console.Write("Pinkod: ");
-                string pin = Console.ReadLine();
+                string pin = Console.ReadLine(); // User input pin
 
                 loginAttempts--;
 
-                if (pin == userpin[userID] && userName == users[userID])
+                if (pin == userpin[userID] && userName == users[userID]) // Checks if it's the correct pin
                 {
                     isLoggedIn = true;
                     Console.Clear();
                     Console.WriteLine("Du är nu inloggad som {0}!\n", userName);
                 }
-                else
+                else // Prints how many attempts are left if it was uncorrect pin
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Fel pinkod. Du har {0} antal försök kvar\n", loginAttempts);
@@ -160,6 +162,7 @@ namespace ElinsBank
                 Console.WriteLine("4. Logga ut");
                 Console.ForegroundColor = ConsoleColor.Gray;
 
+                // User input
                 int menuSelection = Int32.Parse(Console.ReadLine());
 
                 switch (menuSelection)
@@ -185,7 +188,7 @@ namespace ElinsBank
                         break;
                     default:
                         Console.WriteLine("Ogiltligt val. Vänligen klicka enter och välj igen.");
-                        Console.ReadKey(); // TODO Fixa enter
+                        Console.ReadKey(); 
                         Console.Clear();
                         break;
                 }
@@ -200,8 +203,9 @@ namespace ElinsBank
             Console.WriteLine($"Konton för {userAccounts[userID,0]}\n");
             Console.ForegroundColor = ConsoleColor.Gray;
 
-            int accountNum = 1;
+            int accountNum = 1; // Prints number order for accounts
 
+            // Prints accounts and balance
             for (int i = 1; i < userAccounts.GetLength(0); i++)
             {
                 if (!(i % 2 == 0))
@@ -224,7 +228,7 @@ namespace ElinsBank
             Console.WriteLine($"Överföring mellan konton.\n");
             Console.ForegroundColor = ConsoleColor.Gray;
 
-            int accountNum = 1; // Set
+            int accountNum = 1; // Prints number order for accounts
 
             // Prints accounts and balance
             for (int i = 1; i < userAccounts.GetLength(0); i++)
@@ -249,6 +253,7 @@ namespace ElinsBank
                 Console.Write("\nAnge nummer för det konto du vill föra över ifrån: ");
                 fromAccount = Int32.Parse(Console.ReadLine());
 
+                // Checks if the number selection is valid
                 if (fromAccount < 1 || fromAccount > accountNum)
                 {
                     error = true;
@@ -266,6 +271,7 @@ namespace ElinsBank
             if (fromAccount > 1)
                 fromAccount++;
 
+            // Prints what amount is available to tranfer
             for (int i = 0; i < userAccounts.GetLength(0); i++)
             {
                 if (fromAccount == i && !(fromAccount % 2 == 0))
@@ -290,6 +296,7 @@ namespace ElinsBank
                 Console.Write("\nAnge nummer för det konto du vill föra över till: ");
                 toAccount = Int32.Parse(Console.ReadLine());
 
+                // Checks if the number selection is valid
                 if (toAccount < 1 || toAccount > accountNum)
                 {
                     error = true;
@@ -306,6 +313,7 @@ namespace ElinsBank
             if (toAccount > 1)
                     toAccount++;
 
+            // Checks that money aren't transferred to the same account
             if (toAccount == fromAccount || toAccount + 1 == fromAccount + 1)
             {   Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Det går inte att föra över pengar till samma konto");
@@ -322,9 +330,8 @@ namespace ElinsBank
 
                 if (transferAmount <= balanceAccountFrom)
                 {
-                    // Add and withdraw money to accounts
-                    balanceAccountFrom = balanceAccountFrom - transferAmount;
-                    balanceAccountTo = balanceAccountTo + transferAmount;
+                    balanceAccountFrom = balanceAccountFrom - transferAmount; // Withdraw money from account
+                    balanceAccountTo = balanceAccountTo + transferAmount; // Add money to account
 
                     // Set new balance to accounts
                     string newBalanceFrom = balanceAccountFrom.ToString();
@@ -333,13 +340,14 @@ namespace ElinsBank
                     string newBalanceTo = balanceAccountTo.ToString();
                     userAccounts[userID, toAccount + 1] = newBalanceTo;
 
+                    // Prints summary of the transfer and new balance to accounts
                     Console.WriteLine("\n\t**********************");
                     Console.WriteLine($"\nDu har fört över {transferAmount} kr från {userAccounts[userID, fromAccount]} till {userAccounts[userID, toAccount]}.\n\nNytt saldo:");
 
                     Console.WriteLine(userAccounts[userID, fromAccount] + ":\t" + userAccounts[userID, fromAccount + 1]);
                     Console.WriteLine(userAccounts[userID, toAccount] + ":\t" + userAccounts[userID, toAccount + 1]);
                 }
-                else
+                else // If insufficient funds
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("\nSumman är för stor för föra över. Kontot har otillräckligt saldo.");
@@ -356,14 +364,14 @@ namespace ElinsBank
             Console.WriteLine($"Uttag av pengar.\n");
             Console.ForegroundColor = ConsoleColor.Gray;
 
-            int accountNum = 1;
+            int accountNum = 1; // Number order for accounts
 
             // Prints accounts and balance
             for (int i = 1; i < userAccounts.GetLength(0); i++)
             {
                 if (!(i % 2 == 0))
                 {
-                    Console.Write(accountNum + ". " + userAccounts[userID, i] + ": \t"); // TODO Fixa nummer för alternativ
+                    Console.Write(accountNum + ". " + userAccounts[userID, i] + ": \t"); 
                     accountNum++;
                 }
                 else
@@ -381,6 +389,7 @@ namespace ElinsBank
                 Console.Write("\nAnge nummer för det konto du vill ta ut pengar ifrån: ");
                 fromAccount = Int32.Parse(Console.ReadLine());
 
+                // Checks if the number selection is valid
                 if (fromAccount < 1 || fromAccount > accountNum)
                 {
                     error = true;
@@ -400,6 +409,7 @@ namespace ElinsBank
                 fromAccount++;
             }
 
+            // Prints how much is available to withdraw
             for (int i = 1; i < userAccounts.GetLength(0); i++)
             {
                 if (fromAccount == i && !(fromAccount % 2 == 0))
@@ -419,6 +429,7 @@ namespace ElinsBank
             // Converts balance from string to decimal for the From account
             decimal balanceAccountFrom = decimal.Parse(userAccounts[userID, fromAccount + 1]);
 
+            // If the withdrawal amount is more than what's available
             while (withdrawal > balanceAccountFrom)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -466,7 +477,7 @@ namespace ElinsBank
         public static void BackToMenu() // Go back to Main menu
         {
             Console.WriteLine("\nKlicka enter för att komma till huvudmenyn");
-            Console.ReadKey(); // TODO Fixa enter
+            Console.ReadKey(); 
             Console.Clear();
         }
     }
