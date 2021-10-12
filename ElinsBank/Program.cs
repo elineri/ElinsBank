@@ -253,6 +253,7 @@ namespace ElinsBank
                 {
                     error = false;
                 }
+
             } while (error == true);
 
             if (fromAccount > 1)
@@ -362,9 +363,26 @@ namespace ElinsBank
                 }
             }
 
-            // User input account transfer From
-            Console.Write("\nAnge nummer för det konto du vill ta ut pengar ifrån: ");
-            int fromAccount = Int32.Parse(Console.ReadLine());
+            int fromAccount;
+            bool error = false;
+
+            do
+            {
+                // User input account transfer From
+                Console.Write("\nAnge nummer för det konto du vill ta ut pengar ifrån: ");
+                fromAccount = Int32.Parse(Console.ReadLine());
+
+                if (fromAccount < 1 || fromAccount > accountNum)
+                {
+                    error = true;
+                    Console.WriteLine("Ogiltligt val.");
+                }
+                else
+                {
+                    error = false;
+                }
+
+            } while (error == true);
 
             if (fromAccount > 1)
             {
@@ -384,39 +402,53 @@ namespace ElinsBank
             }
 
             // User input withdrawal amount
-            Console.Write("Hur mycket vill du ta ut: ");
+            Console.Write("\nHur mycket vill du ta ut: ");
             decimal withdrawal = decimal.Parse(Console.ReadLine());
 
             // Converts balance from string to decimal for the From account
             decimal balanceAccountFrom = decimal.Parse(userAccounts[userID, fromAccount + 1]);
 
-            // User input for password / pincode
-            Console.Write("Ange pinkod: ");
-            string pin = Console.ReadLine();
-
-            if (pin == userpin[userID] && userName == user[userID] && withdrawal <= balanceAccountFrom) // If pin correct and sufficient funds
+            while (withdrawal > balanceAccountFrom)
             {
-                // Withdraw and set new account balance
-                balanceAccountFrom = balanceAccountFrom - withdrawal;
-                string newBalanceFrom = balanceAccountFrom.ToString();
-                userAccounts[userID, fromAccount + 1] = newBalanceFrom;
-
-                // Print new balance
-                Console.WriteLine("\n\t**********************");
-                Console.WriteLine($"\nDu har tagit ut {withdrawal} kr från {userAccounts[userID, fromAccount]}");
-                Console.WriteLine("Nytt saldo är: {0} kr", balanceAccountFrom);
-            }
-            else if (!(withdrawal <= balanceAccountFrom)) // If insufficient funds 
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Summan är för stor för att ta ut. Kontot har otillräckligt saldo.");
                 Console.ForegroundColor = ConsoleColor.Gray;
+
+                Console.Write("\nHur mycket vill du ta ut: ");
+                withdrawal = decimal.Parse(Console.ReadLine());
             }
-            else if (!(pin == userpin[userID] && userName == user[userID])) // If pin doesn't match with username
+
+            bool pinCorrect = false;
+            int pinAttempts = 3;
+
+            while (!pinCorrect && pinAttempts > 0)
             {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("\nFelaktig pinkod. Pengarna har inte tagits ut.");
-                Console.ForegroundColor = ConsoleColor.Gray;
+                // User input for password / pincode
+                Console.Write("Ange pinkod: ");
+                string pin = Console.ReadLine();
+
+                pinAttempts--;
+
+                if (pin == userpin[userID] && userName == user[userID] && withdrawal <= balanceAccountFrom) // If pin correct and sufficient funds
+                {
+                    pinCorrect = true;
+
+                    // Withdraw and set new account balance
+                    balanceAccountFrom = balanceAccountFrom - withdrawal;
+                    string newBalanceFrom = balanceAccountFrom.ToString();
+                    userAccounts[userID, fromAccount + 1] = newBalanceFrom;
+
+                    // Print new balance
+                    Console.WriteLine("\n\t**********************");
+                    Console.WriteLine($"\nDu har tagit ut {withdrawal} kr från {userAccounts[userID, fromAccount]}");
+                    Console.WriteLine("Nytt saldo är: {0} kr", balanceAccountFrom);
+                }
+                else if (!(pin == userpin[userID] && userName == user[userID])) // If pin doesn't match with username
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nFelaktig pinkod. Du har {tries} försök kvar", pinAttempts);
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
             }
         }
 
