@@ -83,8 +83,39 @@ namespace ElinsBank
 
             Console.WriteLine("Välkommen till Elins bank!\nAnge användarnamn (förnamn.efternamn) samt en fyrsiffrig pinkod för att logga in.");
 
-            Console.Write("\nAnvändarnamn: "); //TODO Trycatch
-            userName = Console.ReadLine().ToLower();
+            try
+            {
+                Console.Write("\nAnvändarnamn: ");
+                userName = Console.ReadLine().ToLower(); // Input username
+                bool userFound = false;
+
+                // Checks if the user exists and if not asks for input again
+                do
+                {
+                    for (int i = 0; i < users.GetLength(0); i++)
+                    {
+                        if (users[i] == userName)
+                        {
+                            userFound = true;
+                        }
+                    }
+
+                    if (userFound == false)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Användaren kan inte hittas. Vänligen försök igen.");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+
+                        Console.Write("\nAnvändarnamn: ");
+                        userName = Console.ReadLine().ToLower();
+                    }
+                } while (userFound == false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
 
             userID = Array.IndexOf(users, userName); // Matches username with correct password
 
