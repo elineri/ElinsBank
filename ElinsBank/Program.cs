@@ -56,7 +56,15 @@ namespace ElinsBank
             while (run)
             {
                 LogIn(out isLoggedIn, out userID, out user, out userpin, out userName);
-                Menu(userAccounts, userID, user, userpin, userName, out isLoggedIn);
+
+                if (isLoggedIn)
+                {
+                    Menu(userAccounts, userID, user, userpin, userName, out isLoggedIn);
+                }
+                else
+                {
+                    run = false; // If the user hasn't logged in within 3 attempts the program shuts down.
+                }
             }
         }
 
@@ -76,49 +84,41 @@ namespace ElinsBank
             // User passwords
             userpin = new string[5];
             userpin[0] = "1234";
-            userpin[1] = "1234";
-            userpin[2] = "1234";
-            userpin[3] = "1234";
-            userpin[4] = "1234";
+            userpin[1] = "2345";
+            userpin[2] = "3456";
+            userpin[3] = "4567";
+            userpin[4] = "5678";
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\t***** Välkommen till Elins bank! *****");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Ange användarnamn(förnamn.efternamn) samt en fyrsiffrig pinkod för att logga in.");
+            
+            Console.Write("\nAnvändarnamn: ");
+            userName = Console.ReadLine().ToLower(); // Input username
+            bool userFound = false;
 
-            try
+            // Checks if the user exists and if not asks for input again
+            do
             {
-                Console.Write("\nAnvändarnamn: ");
-                userName = Console.ReadLine().ToLower(); // Input username
-                bool userFound = false;
-
-                // Checks if the user exists and if not asks for input again
-                do
+                for (int i = 0; i < users.GetLength(0); i++)
                 {
-                    for (int i = 0; i < users.GetLength(0); i++)
+                    if (users[i] == userName)
                     {
-                        if (users[i] == userName)
-                        {
-                            userFound = true;
-                        }
+                        userFound = true;
                     }
+                }
 
-                    if (userFound == false)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Användaren kan inte hittas. Vänligen försök igen.");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                if (userFound == false)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Användaren kan inte hittas. Vänligen försök igen.");
+                    Console.ForegroundColor = ConsoleColor.Gray;
 
-                        Console.Write("\nAnvändarnamn: ");
-                        userName = Console.ReadLine().ToLower();
-                    }
-                } while (userFound == false);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+                    Console.Write("\nAnvändarnamn: ");
+                    userName = Console.ReadLine().ToLower();
+                }
+            } while (userFound == false);
 
             userID = Array.IndexOf(users, userName); // Matches username with correct password
 
@@ -149,7 +149,7 @@ namespace ElinsBank
             bool run = true;
             isLoggedIn = true;
 
-            while (run && isLoggedIn)
+            while (run)
             {
                 // Prints menu options
                 Console.WriteLine("Välj vad du vill göra\n");
@@ -307,7 +307,7 @@ namespace ElinsBank
                     toAccount++;
 
             if (toAccount == fromAccount || toAccount + 1 == fromAccount + 1)
-            {   Console.ForegroundColor = ConsoleColor.kRed;
+            {   Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Det går inte att föra över pengar till samma konto");
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
