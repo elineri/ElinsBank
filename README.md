@@ -1,6 +1,7 @@
 # ElinsBank-Individuellt-projekt
 
 INNEHÅLL/STRUKTUR
+
 Detta är en bankautomat och det finns fem användare. I Main så har alla konton skapats för användarna sedan körs en metod LogIn som skriver ut ett välkomstmeddelande samt 
 ber användaren att ange användarnamn och pinkod. I metoden kontrolleras att användarnamn finns och att pinkoden stämmer överens med användaren. Användaren får tre försök att
 skriva rätt pinkod och sedan stängs programmet ner. Om användaren lyckas logga in så går programmetvidare till metoden Menu. Det finns fyra menyalternativ och varje alternativ
@@ -20,6 +21,7 @@ Menyalternativ 4, logga ut. Användaren loggas ut men programmet stängs inte ne
 
 
 REKLEKTION/RESONEMANT UPPBYGGNAD AV PROGRAMMET
+
 I början gjorde jag en 2D jagged array för varje användare med konton och saldo, alltså fem stycken. Detta var väldigt onödigt och gjorde koden rätt komplicerad. Koden funkade 
 men jag kände att skriva resten av koden kunde bli onödigt klurigt och komplicerat så jag bestämde mig för att börja om. I stället gjorde jag en 2D array som inkluderade alla 
 användare med tillhörande konton och saldo. Första siffran (array[första siffra, andra siffra]) blev då användar-ID genom att gå igenom arrayen och se vilket index det låg på 
