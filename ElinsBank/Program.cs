@@ -365,14 +365,14 @@ namespace ElinsBank
             int accountNum = 1; // Number order for accounts
 
             // Prints accounts and balance
-            for (int i = 1; i < userAccounts.GetLength(0); i++)
+            for (int i = 1; i < userAccounts.GetLength(1); i++)
             {
-                if (!(i % 2 == 0))
+                if (!(i % 2 == 0) && !(userAccounts[userID, i] == ""))
                 {
                     Console.Write(accountNum + ". " + userAccounts[userID, i] + ": \t"); 
                     accountNum++;
                 }
-                else
+                else if (i % 2 == 0 && !(userAccounts[userID, i] == ""))
                 {
                     Console.WriteLine(userAccounts[userID, i]);
                 }
@@ -402,21 +402,12 @@ namespace ElinsBank
 
             } while (error == true);
 
-            if (fromAccount > 1)
-            {
-                fromAccount++;
-            }
-
             // Prints how much is available to withdraw
             for (int i = 1; i < userAccounts.GetLength(0); i++)
             {
-                if (fromAccount == i && !(fromAccount % 2 == 0))
+                if (fromAccount == i)
                 {
-                    Console.WriteLine($"Du kan ta ut totalt {userAccounts[userID, i + 1]} kr från {userAccounts[userID, i]}");
-                }
-                else if (fromAccount == i && (fromAccount % 2 == 0))
-                {
-                    Console.WriteLine($"Du kan ta ut totalt {userAccounts[userID, i + 2]} kr från {userAccounts[userID, i + 1]}");
+                    Console.WriteLine($"Du kan ta ut totalt {userAccounts[userID, i + fromAccount]} kr från {userAccounts[userID, i + fromAccount - 1]}");
                 }
             }
 
@@ -425,7 +416,7 @@ namespace ElinsBank
             decimal withdrawal = decimal.Parse(Console.ReadLine());
 
             // Converts balance from string to decimal for the From account
-            decimal balanceAccountFrom = decimal.Parse(userAccounts[userID, fromAccount + 1]);
+            decimal balanceAccountFrom = decimal.Parse(userAccounts[userID, fromAccount + fromAccount]);
 
             // If the withdrawal amount is more than what's available
             while (withdrawal > balanceAccountFrom)
@@ -456,11 +447,11 @@ namespace ElinsBank
                     // Withdraw and set new account balance
                     balanceAccountFrom = balanceAccountFrom - withdrawal;
                     string newBalanceFrom = balanceAccountFrom.ToString();
-                    userAccounts[userID, fromAccount + 1] = newBalanceFrom;
+                    userAccounts[userID, fromAccount + fromAccount] = newBalanceFrom;
 
                     // Print new balance
                     Console.WriteLine("\n\t**********************");
-                    Console.WriteLine($"\nDu har tagit ut {withdrawal} kr från {userAccounts[userID, fromAccount]}");
+                    Console.WriteLine($"\nDu har tagit ut {withdrawal} kr från {userAccounts[userID, fromAccount + fromAccount - 1]}");
                     Console.WriteLine("Nytt saldo är: {0} kr", balanceAccountFrom);
                 }
                 else if (!(pin == userpin[userID] && userName == users[userID])) // If pin doesn't match with username
