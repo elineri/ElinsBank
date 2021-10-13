@@ -11,7 +11,7 @@ namespace ElinsBank
             bool run = true; // Set the program to run
 
             // User Accounts
-            string[,] userAccounts = new string[5, 6];
+            string[,] userAccounts = new string[5, 7];
 
             // User 1
             userAccounts[0, 0] = "elin.ericstam"; // Set username
@@ -19,6 +19,8 @@ namespace ElinsBank
             userAccounts[0, 2] = "20234,50"; // Set first account balance
             userAccounts[0, 3] = "Sparkonto"; // Set second account name
             userAccounts[0, 4] = "30035,00"; // Set second account balance
+            userAccounts[0, 5] = "Pension"; // Set second account name
+            userAccounts[0, 6] = "10005,00"; // Set second account balance
 
             // User 2
             userAccounts[1, 0] = "anas.alhussain"; // Set username
@@ -26,6 +28,8 @@ namespace ElinsBank
             userAccounts[1, 2] = "40341,00"; // Set first account balance
             userAccounts[1, 3] = "Sparkonto"; // Set second account name
             userAccounts[1, 4] = "130160,25"; // Set second account balance
+            userAccounts[1, 5] = ""; 
+            userAccounts[1, 6] = ""; 
 
             // User 3
             userAccounts[2, 0] = "tobias.landen"; // Set username
@@ -33,6 +37,8 @@ namespace ElinsBank
             userAccounts[2, 2] = "32198,50"; // Set first account balance
             userAccounts[2, 3] = "Sparkonto"; // Set second account name
             userAccounts[2, 4] = "90200,00"; // Set second account balance
+            userAccounts[2, 5] = "";
+            userAccounts[2, 6] = "";
 
             // User 4
             userAccounts[3, 0] = "malin.claesson"; // Set username
@@ -40,6 +46,8 @@ namespace ElinsBank
             userAccounts[3, 2] = "10112,25"; // Set first account balance
             userAccounts[3, 3] = "Sparkonto"; // Set second account name
             userAccounts[3, 4] = "40000,00"; // Set second account balance
+            userAccounts[3, 5] = "";
+            userAccounts[3, 6] = "";
 
             // User 5
             userAccounts[4, 0] = "fredrik.strandberg"; // Set username
@@ -47,6 +55,8 @@ namespace ElinsBank
             userAccounts[4, 2] = "50000,00"; // Set first account balance
             userAccounts[4, 3] = "Sparkonto"; // Set second account name
             userAccounts[4, 4] = "65000,00"; // Set second account balance
+            userAccounts[4, 5] = "Pension";
+            userAccounts[4, 6] = "30410,50";
 
             string[] users = new string[5];
             string[] userpin = new string[5];
@@ -205,14 +215,14 @@ namespace ElinsBank
             int accountNum = 1; // Prints number order for accounts
 
             // Prints accounts and balance
-            for (int i = 1; i < userAccounts.GetLength(0); i++)
+            for (int i = 1; i < userAccounts.GetLength(1); i++)
             {
-                if (!(i % 2 == 0))
+                if (!(i % 2 == 0) && !(userAccounts[userID, i] == ""))
                 {
                     Console.Write(accountNum + ". " + userAccounts[userID, i] + ": \t");
                     accountNum++;
                 }
-                else
+                else if (i % 2 == 0 && !(userAccounts[userID, i] == ""))
                 {
                     Console.WriteLine(userAccounts[userID, i]);
                 }
