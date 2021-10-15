@@ -4,7 +4,7 @@ INNEHÅLL/STRUKTUR
 
 Detta är en bankautomat och det finns fem användare. I Main så har alla konton skapats för användarna sedan körs en metod LogIn som skriver ut ett välkomstmeddelande samt 
 ber användaren att ange användarnamn och pinkod. I metoden kontrolleras att användarnamn finns och att pinkoden stämmer överens med användaren. Användaren får tre försök att
-skriva rätt pinkod och sedan stängs programmet ner. Om användaren lyckas logga in så går programmetvidare till metoden Menu. Det finns fyra menyalternativ och varje alternativ
+skriva rätt pinkod och sedan stängs programmet ner. Om användaren lyckas logga in så går programmet vidare till metoden Menu. Det finns fyra menyalternativ och varje alternativ
 (förutom att logga ut) har en egen metod. När varje funktion har körts för alternativ 1-3 så ska användaren klicka på enter för att komma tillbaka till huvudmenyn. 
 
 Menyalternativ 1, metod CheckAccounts. Här kan användaren se konton och saldo. Inget mer kan göras.
@@ -30,10 +30,8 @@ underlättade sedan när man skulle skriva ut konton och saldo. Nu har jag tre s
 konton. Det skulle nog vara smidigt att slå ihop detta till en enda 2d array. Första siffran skulle då också funkat som userID på samma sätt i den lösning jag har nu. Men 
 eftersom mitt program fungerar så väljer jag att behålla den nuvarande lösningen.
 
-För att skriva ut konton och saldo i varje metod så har jag valt en for loop som går igenom längden i arrayen för antal konton. Sedan i for-loopen har jag valt att lägga in en 
-if-sats. Eftersom jag vet att alla kontonamn är ojämna tal så vill jag att de ska skrivas ut med Console.Write. Saldo för varje konto är jämna tal över 0 och de vill jag att de 
-ska skrivas ut på samma rad som kontonamn så att det blir tydligt i konsolen. Här skulle man troligtvis kunna korta ner koden och göra den simplare men jag har tyvärr inte 
-kommit på något bättre sätt än.
+För att skriva ut konton och saldo i varje metod så har jag valt en for loop som går igenom längden i arrayen för antal konton. Om jag hade skapat en vanlig array för detta så skulle jag kanske valt en foreach loop istället. Sedan i for-loopen har jag valt att lägga in en if-sats. Eftersom jag vet att alla kontonamn är ojämna tal så vill jag att 
+de ska skrivas ut med Console.Write. Saldo för varje konto är jämna tal över 0 och de vill jag att de ska skrivas ut på samma rad som kontonamn så att det blir tydligt i konsolen. Här skulle man troligtvis kunna korta ner koden och göra den simplare men jag har tyvärr inte kommit på något bättre sätt än.
 
 Menyn valde jag att göra till en switch-sats eftersom jag tycker det är mer passade än en if-sats. För varje menyalternativ har jag gjort en metod (förutom för att logga ut) 
 för att inte ha så mycket kod i menymetoden och för att det blir tydligare att hålla koden för varje funktion separat.
