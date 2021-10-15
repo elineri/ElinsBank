@@ -297,7 +297,9 @@ namespace ElinsBank
 
                     if (balanceAccountFrom == 0) // If there are no money in the account
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Det finns inga pengar att föra över från detta konto.");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                     }
                     else
                     {
@@ -441,7 +443,9 @@ namespace ElinsBank
 
                 if (balanceAccountFrom == 0) // If there are no money in the account
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Det finns inga pengar att ta ut från detta konto");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
                 else
                 {
