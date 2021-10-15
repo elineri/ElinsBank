@@ -68,11 +68,11 @@ namespace ElinsBank
 
             while (run)
             {
-                LogIn(out isLoggedIn, out userID, out users, out userpin, out userName);
+                LogIn(out isLoggedIn, out userID, out users, out userpin, out userName); // Login
 
                 if (isLoggedIn)
                 {
-                    Menu(userAccounts, userID, users, userpin, userName, out isLoggedIn);
+                    Menu(userAccounts, userID, users, userpin, userName, out isLoggedIn); // Prints menu
                 }
                 else
                 {
@@ -499,7 +499,7 @@ namespace ElinsBank
                         else if (!(pin == userpin[userID] && userName == users[userID])) // If pin doesn't match with username
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("\nFelaktig pinkod. Du har {tries} försök kvar", pinAttempts);
+                            Console.WriteLine("\nFelaktig pinkod. Du har {0} försök kvar", pinAttempts);
                             Console.ForegroundColor = ConsoleColor.Gray;
                         }
                     }
@@ -510,7 +510,7 @@ namespace ElinsBank
                 Console.WriteLine(ex.Message);
                 throw;
             }
-        }
+}
 
         public static void BackToMenu() // Go back to Main menu
         {
