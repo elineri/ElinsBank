@@ -1,5 +1,8 @@
 # ElinsBank-Individuellt-projekt
 
+OM 
+Detta är en individuellt skolprojekt för kursen Utveckling med C# och .NET.
+
 INNEHÅLL/STRUKTUR
 
 Detta är en bankautomat och det finns fem användare. I Main så har alla konton skapats för användarna sedan körs en metod LogIn som skriver ut ett välkomstmeddelande samt 
